@@ -67,3 +67,11 @@ height: 15%;
   -moz-user-select: none;
   user-select: none;
 }
+
+@media screen and (max-device-width: 1380px) and (max-device-width: 800px){   
+        #gameCanvas
+{
+
+    width: 75%;
+}
+    }    
