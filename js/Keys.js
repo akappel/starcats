@@ -60,7 +60,9 @@ var Keys = function(up, left, right, down, enter, x, y) {
 		var mousePos = getMousePos(canvas3, e);
 
   		that.x= mousePos.x*(1200/canvas3.offsetWidth);
-  		that.y= mousePos.y*(750/canvas3.offsetHeight);	
+  		that.y= mousePos.y*(750/canvas3.offsetHeight);
+  		var snd = new Audio("./music/laser.wav");
+		snd.play();	
 
   	};
 	
