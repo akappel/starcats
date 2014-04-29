@@ -176,6 +176,8 @@ var Player = function(startX, startY, startColor, startName, startMessage, start
 				laserY = keys.y;
 
 
+
+
 		return (prevX != x || prevY != y || prevName != name || prevMessage != message || prevTrans != textTransparency || prevLaserY != laserY || prevLaserX != laserX || prevCat != cat || prevDeaths != deaths || prevKills != kills || prevHealth != health) ? true : false;
 	};
 
