@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+	<head>
+		<title>Star Catz</title>
+		<meta charset="utf-8">
+		
+		<link rel="stylesheet" href="style/reset.css">
+		<link rel="stylesheet" href="style/game.css">
+		<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow' rel='stylesheet' type='text/css'>
+	</head>
+	
+	<body class="unselectable">
+		<canvas id="backCanvas" style="position: absolute; left: 0; top: 0; z-index: -1;" class="unselectable"></canvas>
+		<br>
+		<center><img src="images/title.png" style="z-index: 1;" class="unselectable">
+		<canvas id="gameCanvas" style="z-index: 1;" class="unselectable"></canvas><br>
+		<input type="text" id="chatText" placeholder="Type here to chat... Press 'Enter' to submit... To change your name type 'name=desiredname'" class="unselectable">
+		<script src="http://ec2-54-187-131-44.us-west-2.compute.amazonaws.com:80/socket.io/socket.io.js"></script>
+		<script src="js/requestAnimationFrame.js"></script>
+		<script src="js/Keys.js"></script>
+		<script src="js/Player.js"></script>
+		<script src="js/game.js"></script>
+		<script>
+			init();
+			animate();
+		</script>
+		<!--music silenced for testing purposes :/ -->
+		<!--<center><audio loop autoplay style="z-index: -1;">
+  			<source src="music/music.mp3" type="audio/mpeg">
+  			Your browser does not support the audio element.
+		</audio></center>-->
+
+		<script>
+			var canvas2 = document.getElementById('backCanvas');
+			var context = canvas2.getContext("2d");
+			
+			canvas2.width = window.innerWidth;
+        	canvas2.height = window.innerHeight;
+
+        	for(var i = 0; i*8 < canvas2.height; i++){
+				context.beginPath();
+				context.moveTo(0,i*8);
+				context.lineTo(canvas2.width,i*8);
+				context.lineWidth = 4;
+				context.strokeStyle = 'rgba(255, 255, 255, .075)';
+				context.stroke();
+			}
+        </script>
+
+	</body>
+</html>
