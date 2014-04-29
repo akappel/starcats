@@ -1,5 +1,5 @@
 
-var Player = function(startX, startY, startColor, startName, startMessage, startTrans, startLaserX, startLaserY, startCat) {
+var Player = function(startX, startY, startColor, startName, startMessage, startTrans, startLaserX, startLaserY, startCat, startDeaths, startKills, startHealth) {
 	var x = startX,
 		y = startY,
 		color = startColor,
@@ -10,11 +10,23 @@ var Player = function(startX, startY, startColor, startName, startMessage, start
 		laserX = startLaserX,
 		laserY = startLaserY,
 		cat = startCat,
+		deaths = startDeaths,
+		kills = startKills,
+		health = startHealth,
 		moveAmount = 4;
 		var imageObj = new Image();
 		imageObj.src = './images/cats.png';
 		if(cat == false) imageObj.src = './images/profs.png';
-	
+
+	var getDeaths = function() {
+		return deaths;
+	};
+	var getKills = function() {
+		return kills;
+	};
+	var getHealth = function() {
+		return health;
+	};
 	var getCat = function() {
 		return cat;
 	};
@@ -46,6 +58,17 @@ var Player = function(startX, startY, startColor, startName, startMessage, start
 
 	var getColor = function() {
 		return color;
+	};
+
+	var setDeaths = function(newDeaths) {
+		deaths = newDeaths;
+	};
+	var setKills = function(newKills) {
+		kills = newKills;
+	};
+
+	var setHealth = function(newHealth) {
+		health = newHealth;
 	};
 	
 	var setCat = function(newCat) {
@@ -92,7 +115,10 @@ var Player = function(startX, startY, startColor, startName, startMessage, start
 			prevTrans = textTransparency,
 			prevLaserX = laserX,
 			prevLaserY = laserY,
-			prevCat = cat;
+			prevCat = cat,
+			prevDeaths = deaths,
+			prevKills = kills,
+			prevHealth = health;
 
 		
 		if (keys.up) {
@@ -146,13 +172,11 @@ var Player = function(startX, startY, startColor, startName, startMessage, start
 				textTransparency-=.00175;
 			}
 
-			
 				laserX = keys.x;
 				laserY = keys.y;
 
 
-
-		return (prevX != x || prevY != y || prevName != name || prevMessage != message || prevTrans != textTransparency || prevLaserY != laserY || prevLaserX != laserX || prevCat != cat) ? true : false;
+		return (prevX != x || prevY != y || prevName != name || prevMessage != message || prevTrans != textTransparency || prevLaserY != laserY || prevLaserX != laserX || prevCat != cat || prevDeaths != deaths || prevKills != kills || prevHealth != health) ? true : false;
 	};
 
 
@@ -174,6 +198,13 @@ var Player = function(startX, startY, startColor, startName, startMessage, start
         var destHeight = sourceHeight;
         var destX = x - ((imageObj.width/3)/2);
         var destY = y - ((imageObj.height/3)/2);
+
+        ctx.fillStyle = "rgba(0,0,0,.7)";
+        ctx.fillRect(x-40, y-48, 80, 10);
+
+        ctx.fillStyle = "rgba(0,150,0,1)";
+        ctx.fillRect(x-40, y-48, 80*(this.getHealth()/1000), 10);
+
 
 		ctx.drawImage(imageObj, sourceX, sourceY, sourceWidth, sourceHeight, destX, destY, destWidth, destHeight);
 		if(this.getLaserX() != -1 && this.getLaserY() != -1){
@@ -197,10 +228,14 @@ var Player = function(startX, startY, startColor, startName, startMessage, start
       		ctx.stroke();
       	}
 
+
 		ctx.fillStyle = tempFillStyle;
 	};
 
 	return {
+		getDeaths: getDeaths,
+		getKills: getKills,
+		getHealth: getHealth,
 		getCat: getCat,
 		getLaserX: getLaserX,
 		getLaserY: getLaserY,
@@ -210,6 +245,9 @@ var Player = function(startX, startY, startColor, startName, startMessage, start
 		getY: getY,
 		getName: getName,
 		getColor: getColor,
+		setDeaths: setDeaths,
+		setKills: setKills,
+		setHealth: setHealth,
 		setCat: setCat,
 		setLaserX: setLaserX,
 		setLaserY: setLaserY,
