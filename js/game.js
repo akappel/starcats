@@ -17,6 +17,7 @@ var canvas,
 	starXD3,
 	starYD3, 
 	starRadD3;
+	
 			
 
 function init() {
@@ -70,13 +71,16 @@ function init() {
 		startTrans = 1,
 		startLaserX = -1,
 		startLaserY = -1,
+		startDeaths = 0, 
+		startKills = 0, 
+		startHealth = 1000,
 		startCat = true;
 		if((Math.floor((Math.random()*100)+1)) < 51) startCat = false;
 		
 
 
 	
-	localPlayer = new Player(startX, startY, startColor, startName, startMessage, startTrans, startLaserX, startLaserY, startCat);
+	localPlayer = new Player(startX, startY, startColor, startName, startMessage, startTrans, startLaserX, startLaserY, startCat, startDeaths, startKills, startHealth);
 
 	
 	socket = io.connect("http://ec2-54-187-131-44.us-west-2.compute.amazonaws.com/", {port: 80, transports: ["websocket"]});
@@ -152,7 +156,7 @@ function onResize(e) {
 function onSocketConnected() {
 	console.log("Connected to socket server");
 
-	socket.emit("new player", {x: localPlayer.getX(), y: localPlayer.getY(), color: localPlayer.getColor(), name: localPlayer.getName(), message: localPlayer.getMessage(), textTransparency: localPlayer.getTextTransparency(), laserX: localPlayer.getLaserX(), laserY: localPlayer.getLaserY(), cat: localPlayer.getCat()});
+	socket.emit("new player", {x: localPlayer.getX(), y: localPlayer.getY(), color: localPlayer.getColor(), name: localPlayer.getName(), message: localPlayer.getMessage(), textTransparency: localPlayer.getTextTransparency(), laserX: localPlayer.getLaserX(), laserY: localPlayer.getLaserY(), cat: localPlayer.getCat(), deaths: localPlayer.getDeaths(), kills: localPlayer.getKills(), health: localPlayer.getHealth()});
 };
 
 function onSocketDisconnect() {
@@ -162,7 +166,7 @@ function onSocketDisconnect() {
 function onNewPlayer(data) {
 	console.log("New player connected: "+data.id);
 
-	var newPlayer = new Player(data.x, data.y, data.color, data.name, data.message, data.textTransparency, data.laserX, data.laserY, data.cat);
+	var newPlayer = new Player(data.x, data.y, data.color, data.name, data.message, data.textTransparency, data.laserX, data.laserY, data.cat, data.deaths, data.kills, data.health);
 	newPlayer.id = data.id;
 
 
@@ -180,8 +184,11 @@ function onMovePlayer(data) {
 		console.log("Player not found: "+data.id+ " on move2");
 		return;
 	};
-
-	
+	movePlayer.setColor(data.color);
+	movePlayer.setCat(data.cat);
+	movePlayer.setDeaths(data.deaths);
+	movePlayer.setKills(data.kills);
+	movePlayer.setHealth(data.health);
 	movePlayer.setLaserX(data.laserX);
 	movePlayer.setLaserY(data.laserY);
 	movePlayer.setMessage(data.message);
@@ -189,6 +196,7 @@ function onMovePlayer(data) {
 	movePlayer.setName(data.name);
 	movePlayer.setX(data.x);
 	movePlayer.setY(data.y);
+
 };
 
 
@@ -208,6 +216,7 @@ function onRemovePlayer(data) {
 
 
 function animate() {
+	
 	update();
 	draw();
 
@@ -218,6 +227,10 @@ function animate() {
 
 
 function update() {
+	/*var prevHealth = localPlayer.health,
+		prevKills = localPlayer.kills,
+		prevDeaths = localPlayer.deaths;*/
+
 	for(var i = 0; i<numOfStarsD1; i++){
 		if(starXD1[i] >= canvas.width){
 			starXD1[i]=(starXD1[i]-canvas.width)+0;
@@ -249,10 +262,45 @@ function update() {
 		starYD3[i]+=.16;
 	}
 
-	
-	if (localPlayer.update(keys)) {
+
+if(localPlayer){
+	if(localPlayer.getLaserX() != -1 || localPlayer.getLaserY() != -1){
+	for(var i = 0; i < remotePlayers.length; i++){
+		if(remotePlayers[i].getX() < (localPlayer.getLaserX() + 50) && remotePlayers[i].getX() > (localPlayer.getLaserX() - 50)){
+			if(remotePlayers[i].getY() < (localPlayer.getLaserY() + 50) && remotePlayers[i].getY() > (localPlayer.getLaserY() - 50)){
+				if(remotePlayers[i].getCat() != localPlayer.getCat()){
+				if(remotePlayers[i].getHealth() == 0){
+					//document.getElementById("chatText").value = remotePlayer[i].getHealth();
+					localPlayer.setKills(localPlayer.getKills()+1);
+				}
+				}
+			}
+		}
+	}
+	}
+
+	for(var i = 0; i < remotePlayers.length; i++){
+	if(remotePlayers[i].getCat() != localPlayer.getCat()){
+	if(localPlayer.getX() < (remotePlayers[i].getLaserX() + 50) && localPlayer.getX() > (remotePlayers[i].getLaserX() - 50)){
+		if(localPlayer.getY() < (remotePlayers[i].getLaserY() + 50) && localPlayer.getY() > (remotePlayers[i].getLaserY() - 50)){
+			localPlayer.setHealth(localPlayer.getHealth()-10);
+
+			if(localPlayer.getHealth() == 0){
+					localPlayer.setHealth(1000);
+					localPlayer.setDeaths(localPlayer.getDeaths()+1);
+
+			}
+			}
+		}
+	}
+	}
+	}
+
+
+	if (localPlayer.update(keys) /*|| prevHealth != localPlayer.getHealth() || prevDeaths != localPlayer.getDeaths() || prevKills != localPlayer.getKills()*/) {
 		
-		socket.emit("move player", {x: localPlayer.getX(), y: localPlayer.getY(), name: localPlayer.getName(), color: localPlayer.getColor(), message: localPlayer.getMessage(), textTransparency: localPlayer.getTextTransparency(), laserX: localPlayer.getLaserX(), laserY: localPlayer.getLaserY(), cat: localPlayer.getCat()});
+		socket.emit("move player", {x: localPlayer.getX(), y: localPlayer.getY(), name: localPlayer.getName(), color: localPlayer.getColor(), message: localPlayer.getMessage(), textTransparency: localPlayer.getTextTransparency(), laserX: localPlayer.getLaserX(), laserY: localPlayer.getLaserY(), cat: localPlayer.getCat(), deaths: localPlayer.getDeaths(), kills: localPlayer.getKills(), health: localPlayer.getHealth()});
+	
 	};
 };
 
@@ -286,12 +334,43 @@ function draw() {
 	ctx.fillStyle = tempFillStyle;
 
   	ctx.fillStyle = "#FF8000";
-	ctx.font = '10pt PT Sans Narrow';
+	ctx.font = '12pt PT Sans Narrow';
 	var str = "There are "+(remotePlayers.length + 1 )+" players online";
 	ctx.fillText(str, canvas.width - ((ctx.measureText(str).width)+4), canvas.height - 6);
 
+	ctx.fillStyle = "#00CCCC";
+	var str = "TOP PLAYERS:";
+	ctx.fillText(str, 6, 13);
 
-
+	var top1 = localPlayer, top2 = null, top3 = null;
+	for(var i = 0; i < remotePlayers.length; i++){
+		if(remotePlayers[i].getKills > top1.getKills()){
+			var temp = top1;
+			top1 = remotePlayers[i];
+			top3 = top2;
+			top2 = temp;
+			
+		}else if(top2 == null || remotePlayers[i].getKills > top2.getKills()){
+			var temp = top2;
+			top2 = remotePlayers[i];
+			top3 = temp;
+			
+		}else if(top3 == null || remotePlayers[i].getKills > top3.getKills()){
+			top3 = remotePlayers[i];
+		}
+	}
+	
+	ctx.fillStyle = "#FFFF33";
+	str = top1.getName()+": "+top1.getKills()+" kills";
+	ctx.fillText(str, 6, 27);
+	ctx.fillStyle = "#C0C0C0";
+	str = "------";
+	if(top2 != null) str = top2.getName()+": "+top2.getKills()+" kills";
+	ctx.fillText(str, 6, 41);
+	ctx.fillStyle = "#666600";
+	str = "------";
+	if(top3 != null) str = top3.getName()+": "+top3.getKills()+" kills";
+	ctx.fillText(str, 6, 55);
 	
 	var i;
 	for (i = 0; i < remotePlayers.length; i++) {
