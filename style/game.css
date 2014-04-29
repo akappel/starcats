@@ -18,29 +18,29 @@ canvas {
 {
 	position: absolute;
 	top: 0;
-  left: 0;
+	left: 0;
 
-  margin: 0px;
-  background-color: black;
-  overflow:hidden;
+	margin: 0px;
+	background-color: black;
+	overflow:hidden;
 
- 
+
 }
 #gameCanvas
 {
 
-    width: 82%;
-    min-width: 640px;
-    max-width: 1200px;
-    min-height:400px;
+	width: 82%;
+	min-width: 640px;
+	max-width: 1200px;
+	min-height:400px;
 
-    max-height: 75%;
+	max-height: 75%;
 }
 
 #titlePic
 {
-width: 35%;
-height: 15%;
+	width: 35%;
+	height: 15%;
 }
 
 #chatText
@@ -63,16 +63,24 @@ height: 15%;
 }
 
 .unselectable {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
 }
 
-@media screen and (max-device-width: 1380px) and (max-device-height: 800px){   
-        #gameCanvas
-{
+@media screen and (max-device-width: 1380px) {   
+	#gameCanvas
+	{
 
-    width: 75%;
-    max-width: 1100px;
-}
-    }    
+		width: 75%;
+		max-width: 1100px;
+	}
+
+}    
+@media screen and (max-device-height: 800px){
+	#gameCanvas
+	{
+		width: 75%;
+		max-width: 1100px;
+	}
+	
