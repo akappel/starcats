@@ -181,7 +181,7 @@ function onMovePlayer(data) {
 		return;
 	};
 
-	moveplayer.setCat(data.cat);
+	
 	movePlayer.setLaserX(data.laserX);
 	movePlayer.setLaserY(data.laserY);
 	movePlayer.setMessage(data.message);

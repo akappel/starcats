@@ -91,7 +91,8 @@ var Player = function(startX, startY, startColor, startName, startMessage, start
 			prevMessage = message,
 			prevTrans = textTransparency,
 			prevLaserX = laserX,
-			prevLaserY = laserY;
+			prevLaserY = laserY,
+			prevCat = cat;
 
 		
 		if (keys.up) {
@@ -151,7 +152,7 @@ var Player = function(startX, startY, startColor, startName, startMessage, start
 
 
 
-		return (prevX != x || prevY != y || prevName != name || prevMessage != message || prevTrans != textTransparency || prevLaserY != laserY || prevLaserX != laserX) ? true : false;
+		return (prevX != x || prevY != y || prevName != name || prevMessage != message || prevTrans != textTransparency || prevLaserY != laserY || prevLaserX != laserX || prevCat != cat) ? true : false;
 	};
 
 
