@@ -29,10 +29,10 @@ canvas {
 #gameCanvas
 {
 
-	width: 82%;
+	width: auto;
 	min-width: 640px;
 	max-width: 1200px;
-	min-height:400px;
+	min-height: 400px;
 
 	max-height: 75%;
 }
@@ -67,20 +67,4 @@ canvas {
 	-moz-user-select: none;
 	user-select: none;
 }
-
-@media screen and (max-device-width: 1380px) {   
-	#gameCanvas
-	{
-
-		width: 75%;
-		max-width: 1100px;
-	}
-
-}    
-@media screen and (max-device-height: 800px){
-	#gameCanvas
-	{
-		width: 75%;
-		max-width: 1100px;
-	}
 	
