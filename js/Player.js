@@ -1,5 +1,5 @@
 
-var Player = function(startX, startY, startColor, startName, startMessage, startTrans, startLaserX, startLaserY) {
+var Player = function(startX, startY, startColor, startName, startMessage, startTrans, startLaserX, startLaserY, startCat) {
 	var x = startX,
 		y = startY,
 		color = startColor,
@@ -9,10 +9,15 @@ var Player = function(startX, startY, startColor, startName, startMessage, start
 		message = startMessage,
 		laserX = startLaserX,
 		laserY = startLaserY,
+		cat = startCat,
 		moveAmount = 4;
 		var imageObj = new Image();
 		imageObj.src = './images/cats.png';
+		if(cat == false) imageObj.src = './images/profs.png';
 	
+	var getCat = function() {
+		return cat;
+	};
 	
 	var getLaserX = function() {
 		return laserX;
@@ -41,6 +46,10 @@ var Player = function(startX, startY, startColor, startName, startMessage, start
 
 	var getColor = function() {
 		return color;
+	};
+	
+	var setCat = function(newCat) {
+		cat = newCat;
 	};
 
 	var setLaserX = function(newLaserX) {
@@ -149,7 +158,8 @@ var Player = function(startX, startY, startColor, startName, startMessage, start
 	
 	var draw = function(ctx) {
 		var tempFillStyle = ctx.fillStyle;
-		ctx.fillStyle = "#00CC00";
+		ctx.fillStyle = "rgba(0,255,0,1)";
+		if(!this.getCat()) ctx.fillStyle = "rgba(255,0,0,1)";
 		ctx.font = '13pt PT Sans Narrow';
 		ctx.fillText(this.getName(), x-((ctx.measureText(this.getName()).width)/2), y+57);
 		ctx.fillStyle = "rgba(255,255,255,0)";
@@ -169,16 +179,18 @@ var Player = function(startX, startY, startColor, startName, startMessage, start
 			ctx.beginPath();
 			ctx.lineWidth = 12;
 			ctx.strokeStyle = "rgba(0,255,0,.3)";
-      		ctx.moveTo(x+12, y+3);
+			if(!this.getCat()) ctx.strokeStyle = "rgba(255,0,0,.3)";
+      		ctx.moveTo(x+12, y+1);
       		ctx.lineTo(this.getLaserX(), this.getLaserY());
-      		ctx.moveTo(x-8, y+3);
+      		ctx.moveTo(x-8, y+1);
       		ctx.lineTo(this.getLaserX(), this.getLaserY());
       		ctx.stroke();
       		ctx.lineWidth = 2;
       		ctx.strokeStyle = "rgba(0,255,0,1)";
-      		ctx.moveTo(x+11, y+5);
+      		if(!this.getCat()) ctx.strokeStyle = "rgba(255,0,0,1)";
+      		ctx.moveTo(x+11, y+2);
       		ctx.lineTo(this.getLaserX(), this.getLaserY());
-      		ctx.moveTo(x-7, y+5);
+      		ctx.moveTo(x-7, y+2);
       		ctx.lineTo(this.getLaserX(), this.getLaserY());
 
       		ctx.stroke();
@@ -188,6 +200,7 @@ var Player = function(startX, startY, startColor, startName, startMessage, start
 	};
 
 	return {
+		getCat: getCat,
 		getLaserX: getLaserX,
 		getLaserY: getLaserY,
 		getTextTransparency: getTextTransparency,
@@ -196,6 +209,7 @@ var Player = function(startX, startY, startColor, startName, startMessage, start
 		getY: getY,
 		getName: getName,
 		getColor: getColor,
+		setCat: setCat,
 		setLaserX: setLaserX,
 		setLaserY: setLaserY,
 		setTextTransparency: setTextTransparency,

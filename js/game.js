@@ -69,12 +69,14 @@ function init() {
 		startMessage = "",
 		startTrans = 1,
 		startLaserX = -1,
-		startLaserY = -1;
-
+		startLaserY = -1,
+		startCat = true;
+		if((Math.floor((Math.random()*100)+1)) < 51) startCat = false;
+		
 
 
 	
-	localPlayer = new Player(startX, startY, startColor, startName, startMessage, startTrans, startLaserX, startLaserY);
+	localPlayer = new Player(startX, startY, startColor, startName, startMessage, startTrans, startLaserX, startLaserY, startCat);
 
 	
 	socket = io.connect("http://ec2-54-187-131-44.us-west-2.compute.amazonaws.com/", {port: 80, transports: ["websocket"]});
@@ -150,8 +152,7 @@ function onResize(e) {
 function onSocketConnected() {
 	console.log("Connected to socket server");
 
-	
-	socket.emit("new player", {x: localPlayer.getX(), y: localPlayer.getY(), color: localPlayer.getColor(), name: localPlayer.getName(), message: localPlayer.getMessage(), textTransparency: localPlayer.getTextTransparency(), laserX: localPlayer.getLaserX(), laserY: localPlayer.getLaserY()});
+	socket.emit("new player", {x: localPlayer.getX(), y: localPlayer.getY(), color: localPlayer.getColor(), name: localPlayer.getName(), message: localPlayer.getMessage(), textTransparency: localPlayer.getTextTransparency(), laserX: localPlayer.getLaserX(), laserY: localPlayer.getLaserY(), cat: localPlayer.getCat()});
 };
 
 function onSocketDisconnect() {
@@ -161,8 +162,7 @@ function onSocketDisconnect() {
 function onNewPlayer(data) {
 	console.log("New player connected: "+data.id);
 
-	
-	var newPlayer = new Player(data.x, data.y, data.color, data.name, data.message, data.textTransparency, data.laserX, data.laserY);
+	var newPlayer = new Player(data.x, data.y, data.color, data.name, data.message, data.textTransparency, data.laserX, data.laserY, data.cat);
 	newPlayer.id = data.id;
 
 
@@ -181,7 +181,7 @@ function onMovePlayer(data) {
 		return;
 	};
 
-	
+	moveplayer.setCat(data.cat);
 	movePlayer.setLaserX(data.laserX);
 	movePlayer.setLaserY(data.laserY);
 	movePlayer.setMessage(data.message);
@@ -252,7 +252,7 @@ function update() {
 	
 	if (localPlayer.update(keys)) {
 		
-		socket.emit("move player", {x: localPlayer.getX(), y: localPlayer.getY(), name: localPlayer.getName(), color: localPlayer.getColor(), message: localPlayer.getMessage(), textTransparency: localPlayer.getTextTransparency(), laserX: localPlayer.getLaserX(), laserY: localPlayer.getLaserY()});
+		socket.emit("move player", {x: localPlayer.getX(), y: localPlayer.getY(), name: localPlayer.getName(), color: localPlayer.getColor(), message: localPlayer.getMessage(), textTransparency: localPlayer.getTextTransparency(), laserX: localPlayer.getLaserX(), laserY: localPlayer.getLaserY(), cat: localPlayer.getCat()});
 	};
 };
 
