@@ -30,15 +30,39 @@ var Keys = function(up, left, right, down, enter, x, y) {
 		};
 	};
 
+
+
+	function findPos(obj) {
+    var curleft = 0, curtop = 0;
+    if (obj.offsetParent) {
+        do {
+            curleft += obj.offsetLeft;
+            curtop += obj.offsetTop;
+        } while (obj = obj.offsetParent);
+        return { x: curleft, y: curtop };
+    }
+    return undefined;
+    }
+  function getMousePos(canvas, e)
+	{
+		var pos = findPos(canvas);
+    	var mouseX = e.pageX - pos.x;
+    	var mouseY = e.pageY - pos.y;
+
+    return {
+        x: mouseX,
+        y: mouseY };
+}
+
 	var onMouseDown = function(e) {
 		var that = this;
 		var canvas3 = document.getElementById("gameCanvas");
-		var rect = canvas3.getBoundingClientRect();
-  		that.x= e.clientX - rect.left;
-  		that.y= e.clientY - rect.top;
-  	
-  		
-	};
+		var mousePos = getMousePos(canvas3, e);
+
+  		that.x= mousePos.x*(1200/canvas3.offsetWidth);
+  		that.y= mousePos.y*(750/canvas3.offsetHeight);	
+
+  	};
 	
 	var onKeyUp = function(e) {
 		var that = this,

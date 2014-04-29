@@ -1,5 +1,11 @@
 body {
-	overflow: hidden;
+	overflow:hidden;
+	background-color: #000000;
+}
+html{
+	position: fixed;
+	width: 100%;
+	height: 100%;
 }
 
 
@@ -10,11 +16,33 @@ canvas {
 }
 #backCanvas
 {
-width:  100%;
-  height: 100%;
+	position: absolute;
+	top: 0;
+  left: 0;
+
   margin: 0px;
   background-color: black;
+  overflow:hidden;
+
+ 
 }
+#gameCanvas
+{
+
+    width: 82%;
+    min-width: 640px;
+    max-width: 1200px;
+    min-height:400px;
+
+    max-height: 75%;
+}
+
+#titlePic
+{
+width: 35%;
+height: 15%;
+}
+
 #chatText
 {
 	width:  1150px;
@@ -31,6 +59,7 @@ width:  100%;
 	padding-left: 4px;
 	padding-top: 4px;
 	padding-bottom: 4px;
+	width: 50%;
 }
 
 .unselectable {

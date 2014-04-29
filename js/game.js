@@ -143,8 +143,8 @@ function onMouseup(e) {
 
 
 function onResize(e) {
-	canvas.width = 1200;
-	canvas.height = 750;
+	//canvas.width = 1200;
+	//canvas.height = 750;
 };
 
 function onSocketConnected() {

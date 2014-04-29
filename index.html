@@ -14,8 +14,8 @@
 	<body class="unselectable">
 		<canvas id="backCanvas" style="position: absolute; left: 0; top: 0; z-index: -1;" class="unselectable"></canvas>
 		<br>
-		<center><img src="images/title.png" style="z-index: 1;" class="unselectable">
-		<canvas id="gameCanvas" style="z-index: 1;" class="unselectable"></canvas><br>
+		<center><img id="titlePic" src="images/title.png" style="z-index: 1;" class="unselectable">
+		<canvas id="gameCanvas" style="z-index: 1;" class="unselectable"></canvas>
 		<input type="text" id="chatText" placeholder="Type here to chat... Press 'Enter' to submit... To change your name type 'name=desiredname'" class="unselectable">
 		<script src="http://ec2-54-187-131-44.us-west-2.compute.amazonaws.com:80/socket.io/socket.io.js"></script>
 		<script src="js/requestAnimationFrame.js"></script>
@@ -36,8 +36,11 @@
 			var canvas2 = document.getElementById('backCanvas');
 			var context = canvas2.getContext("2d");
 			
-			canvas2.width = window.innerWidth;
-        	canvas2.height = window.innerHeight;
+			canvas2.width = screen.width;
+        	canvas2.height = screen.height;
+
+        	context.fillStyle = '#000000';
+    		context.fillRect(0, 0, canvas2.width, canvas2.height);
 
         	for(var i = 0; i*8 < canvas2.height; i++){
 				context.beginPath();
