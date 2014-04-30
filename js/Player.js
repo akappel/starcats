@@ -1,9 +1,10 @@
 
-var Player = function(startX, startY, startColor, startName, startMessage, startTrans, startLaserX, startLaserY, startCat, startDeaths, startKills, startHealth) {
+var Player = function(startX, startY, startColor, startName, startMessage, startTrans, startLaserX, startLaserY, startCat, startDeaths, startKills, startHealth, startActive) {
 	var x = startX,
 		y = startY,
 		color = startColor,
 		name = startName,
+		active = startActive,
 		id,
 		textTransparency = startTrans,
 		message = startMessage,
@@ -17,6 +18,10 @@ var Player = function(startX, startY, startColor, startName, startMessage, start
 		var imageObj = new Image();
 		imageObj.src = './images/cats.png';
 		if(cat == false) imageObj.src = './images/profs.png';
+
+	var getActive = function(){
+		return active;
+	};
 
 	var getDeaths = function() {
 		return deaths;
@@ -58,6 +63,9 @@ var Player = function(startX, startY, startColor, startName, startMessage, start
 
 	var getColor = function() {
 		return color;
+	};
+	var setActive = function(newActive){
+		active = newActive;
 	};
 
 	var setDeaths = function(newDeaths) {
@@ -118,7 +126,8 @@ var Player = function(startX, startY, startColor, startName, startMessage, start
 			prevCat = cat,
 			prevDeaths = deaths,
 			prevKills = kills,
-			prevHealth = health;
+			prevHealth = health,
+			prevActive = active;
 
 		
 		if (keys.up) {
@@ -174,16 +183,24 @@ var Player = function(startX, startY, startColor, startName, startMessage, start
 
 				laserX = keys.x;
 				laserY = keys.y;
+				
+		if (document.hasFocus()) {
+			//document.getElementById("chatText").value = "Balls";
+    		this.setActive(true);
+		} else{
+			//document.getElementById("chatText").value = "";
+			this.setActive(false);
+		}  
 
 
-
-
-		return (prevX != x || prevY != y || prevName != name || prevMessage != message || prevTrans != textTransparency || prevLaserY != laserY || prevLaserX != laserX || prevCat != cat || prevDeaths != deaths || prevKills != kills || prevHealth != health) ? true : false;
+		return (prevX != x || prevY != y || prevName != name || prevMessage != message || prevTrans != textTransparency || prevLaserY != laserY || prevLaserX != laserX || prevCat != cat || prevDeaths != deaths || prevKills != kills || prevHealth != health || prevActive != active) ? true : false;
 	};
 
 
 	
 	var draw = function(ctx) {
+		if(this.getActive()){
+
 		var tempFillStyle = ctx.fillStyle;
 		ctx.fillStyle = "rgba(0,255,0,1)";
 		if(!this.getCat()) ctx.fillStyle = "rgba(255,0,0,1)";
@@ -232,9 +249,11 @@ var Player = function(startX, startY, startColor, startName, startMessage, start
 
 
 		ctx.fillStyle = tempFillStyle;
+	}
 	};
 
 	return {
+		getActive: getActive,
 		getDeaths: getDeaths,
 		getKills: getKills,
 		getHealth: getHealth,
@@ -247,6 +266,7 @@ var Player = function(startX, startY, startColor, startName, startMessage, start
 		getY: getY,
 		getName: getName,
 		getColor: getColor,
+		setActive: setActive,
 		setDeaths: setDeaths,
 		setKills: setKills,
 		setHealth: setHealth,

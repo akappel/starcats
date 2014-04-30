@@ -55,6 +55,12 @@ var Keys = function(up, left, right, down, enter, x, y) {
 }
 
 	var onMouseDown = function(e) {
+		if(event.button==2)
+   		{
+     		alert(status);
+     		return false;    
+   		}
+		if (e.button === 0) {
 		var that = this;
 		var canvas3 = document.getElementById("gameCanvas");
 		var mousePos = getMousePos(canvas3, e);
@@ -63,6 +69,7 @@ var Keys = function(up, left, right, down, enter, x, y) {
   		that.y= mousePos.y*(750/canvas3.offsetHeight);
   		var snd = new Audio("./music/laser.wav");
 		snd.play();	
+		}
 
   	};
 	
@@ -89,9 +96,11 @@ var Keys = function(up, left, right, down, enter, x, y) {
 	};
 
 	var onMouseUp = function(e) {
+		if (e.button === 0) {
 		var that = this;
   		that.x= -1;
   		that.y= -1;
+  		}
 	};
 
 	return {
