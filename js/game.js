@@ -296,12 +296,12 @@ if(localPlayer){
 
 		if(localPlayer.getLaserX() != -1 || localPlayer.getLaserY() != -1){
 	for(var i = 0; i < remotePlayers.length; i++){
-		var tempDeaths = remotePlayers[i].getDeaths();
+		
 		if(remotePlayers[i].getX() < (localPlayer.getLaserX() + 50) && remotePlayers[i].getX() > (localPlayer.getLaserX() - 50)){
 			if(remotePlayers[i].getY() < (localPlayer.getLaserY() + 50) && remotePlayers[i].getY() > (localPlayer.getLaserY() - 50)){
 				if(remotePlayers[i].getCat() != localPlayer.getCat()){
-				//if(remotePlayers[i].getHealth() <= 10 && remotePlayers[i].getHealth() >= 0 && remotePlayers[i].getActive()){
-				if(remotePlayers[i].getDeaths() != tempDeaths && remotePlayers[i].getActive()){
+				if(remotePlayers[i].getHealth() <= 10 && remotePlayers[i].getHealth() >= 0 && remotePlayers[i].getActive()){
+				
 					localPlayer.setKills(localPlayer.getKills()+1);
 				}
 				}
